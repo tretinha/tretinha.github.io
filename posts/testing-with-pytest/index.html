@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Hugo 0.59.0" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Tretinha&#39;s Lair" />
+  <meta property="og:url" content="http://localhost:1313/posts/testing-with-pytest/" />
+  <link rel="canonical" href="http://localhost:1313/posts/testing-with-pytest/" /><script type="application/ld+json">
+  {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+           "@type": "WebPage",
+           "@id": "http:\/\/localhost:1313"
+      },
+      "articleSection" : "posts",
+      "name" : "Unit testing with python",
+      "headline" : "Unit testing with python",
+      "description" : "There is no denying that unit testing is dropping our team\x26rsquo;s bug counter to nearly zero, as opposed to the mess it once was. I won\x26rsquo;t be advocating for TDD or trying to convince you that this is the only thing you can do to ensure quality software. It\x26rsquo;s not the only thing we did, and it\x26rsquo;s certainly not the most important one.\nBut, if you are looking to apply unit tests to your python program, this is sort of a guide to what I think are the most important things you should know.",
+      "inLanguage" : "en-US",
+      "author" : "Tretinha\x27s Lair",
+      "creator" : "Tretinha\x27s Lair",
+      "publisher": "Tretinha\x27s Lair",
+      "accountablePerson" : "Tretinha\x27s Lair",
+      "copyrightHolder" : "Tretinha\x27s Lair",
+      "copyrightYear" : "2019",
+      "datePublished": "2019-10-22 10:52:20 -0300 -03",
+      "dateModified" : "2019-10-22 10:52:20 -0300 -03",
+      "url" : "http:\/\/localhost:1313\/posts\/testing-with-pytest\/",
+      "keywords" : [  ]
+  }
+</script>
+<title>Unit testing with python - Tretinha&#39;s Lair</title>
+  <meta property="og:title" content="Unit testing with python - Tretinha&#39;s Lair" />
+  <meta property="og:type" content="article" />
+  <meta name="description" content="There is no denying that unit testing is dropping our team&rsquo;s bug counter to nearly zero, as opposed to the mess it once was. I won&rsquo;t be advocating for TDD or trying to convince you that this is the only thing you can do to ensure quality software. It&rsquo;s not the only thing we did, and it&rsquo;s certainly not the most important one.
+But, if you are looking to apply unit tests to your python program, this is sort of a guide to what I think are the most important things you should know." />
+
+  <link rel="stylesheet" href="https://unpkg.com/flexboxgrid@6.3.1/dist/flexboxgrid.min.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css" />
+  <link rel="stylesheet" href="/css/index.css">
+  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Tretinha&#39;s Lair">
+  
+  <link href="https://fonts.googleapis.com/css?family=Arvo|Permanent+Marker" rel="stylesheet">
+  
+  <script>
+    
+
+    (function (undefined) { }).call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
+  </script>
+
+  
+</head>
+
+<body>
+  <article class="post English" id="article">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2 col-lg-6 col-lg-offset-3">
+        <div class="site-header">
+          
+<header>
+  <div class="signatures site-title">
+    <a href="/">Tretinha&#39;s Lair</a>
+  </div>
+</header>
+<div class="row end-xs">
+  
+  
+</div>
+<div class="header-line"></div>
+
+        </div>
+        <header class="post-header">
+          <h1 class="post-title">Unit testing with python</h1>
+          
+          <div class="row post-desc">
+            <div class="col-xs-6">
+              
+              <time class="post-date" datetime="2019-10-22 10:52:20 -03">
+                22 Oct 2019
+              </time>
+              
+            </div>
+            <div class="col-xs-6">
+              
+              <div class="post-author">
+                <a target="_blank" href="">@Tretinha&#39;s Lair</a>
+              </div>
+              
+            </div>
+          </div>
+          
+        </header>
+
+        <div class="post-content markdown-body">
+          <p>There is no denying that unit testing is dropping our team&rsquo;s bug counter to
+nearly zero, as opposed to the mess it once was. I won&rsquo;t be advocating for TDD
+or trying to convince you that this is the only thing you can do to ensure
+quality software. It&rsquo;s not the only thing we did, and it&rsquo;s certainly not the
+most important one.</p>
+
+<p>But, if you are looking to apply unit tests to your python program, this is
+sort of a guide to what I think are the most important things you should know.</p>
+
+<p>The first thing would be choosing the testing lib. We have looked into the three
+main ones, behave, unittest and pytest. We chose the latter because we thought
+of it as a mix between the two. Behave and unittest are both good in what they
+offer, but we thought behave is more useful for integration tests as the unit
+tests started to get too verbose and unittest lacks test cases, you have to
+create a function for every case and corner case of the thing you are testing.
+Pytest does have test cases, using the parametrize decorator, and it&rsquo;s not too
+verbose, as opposed to behave. And I <strong>think</strong> it&rsquo;s the most used by the
+community as well.</p>
+
+<p>I am also going to use a lib called mock; for mocking stuff, obviously. Most
+people that advocate for unit tests say you shouldn&rsquo;t use other components of
+your software unnecessarily to test one of them. As an example, if you have a
+method that saves a document into a database, you shouldn&rsquo;t access your database
+third-party lib to test it. You can&rsquo;t verify the lib&rsquo;s integrity with your test,
+and if your test fails who knows if this is because of the lib or your code.
+This is where mock shines, you can create a mock of your database connector and
+mimick its output based on the input you provide.</p>
+
+<p>The mock lib comes with a function called patch, where you can mock the things
+you imported in your to-be-tested function. With the database example, let&rsquo;s say
+you use CouchDB and you are going to test a save method. Your function imports
+CouchDB from cloudant, but you <strong>don&rsquo;t</strong> want to use the real CouchDB object -
+again, what if there&rsquo;s a problem in the lib?</p>
+
+<pre><code>from cloudant import CouchDB
+
+class Connector:
+    def __init__(self):
+        self.couchdb = CouchDB(...)
+
+    def save(document):
+        couchdb.bulk_docs([document])  
+</code></pre>
+
+<p>To test the save method, we should mock the CouchDB class, which is the class
+that is imported inside the Connector module. Patch is useful for that. I&rsquo;m
+assuming our Connector lives in a dummy path: <code>databases.couchdb</code>.</p>
+
+<pre><code>from mock import patch
+
+@patch('database.couchdb.CouchDB')
+def test_save(mocked_couchdb):
+   ...
+</code></pre>
+
+<p>With that, the return value of the objects of the imported CouchDB class are all
+<code>Mock()</code> objects. So everytime the <code>self.couchdb = CouchDB(...)</code> is executed,
+<code>self.couchdb</code> receives a <code>Mock()</code> object. And, of course, you can fiddle with
+the return value, it can be basically whatever you want. You could change it
+using a <code>return_value</code> parameter in the path or setting
+<code>mocked_couchdb.return_value = ...</code>.</p>
+
+<p>You can also use the <code>side_effect</code> parameter, which is basically a list
+containing the sequence of return values that are attributed to the object as
+the test cases run. And, lastly, speaking of test cases, to avoid calling the
+<code>save</code> method several times with different documents to test every possible
+case (and, frankly, turning the test basically unreadable), we can use the
+parametrize decorator.</p>
+
+<p>It has two parameters, a tuple containing the names of the test cases and a list
+containing tuples with the test cases. Going on with the database save example,
+we can store the <code>bulk_docs</code> (it&rsquo;s a real method from cloudant&rsquo;s CouchDB)
+responses in a variable and then assert that the response is actually what it&rsquo;s
+supposed to be, that&rsquo;s what tests are for, right? So:</p>
+
+<pre><code>import pytest
+from mock import patch
+
+@patch('database.couchdb.CouchDB')
+@pytest.mark.parametrize(
+    ('document', 'expected_response'), [({'_id': '1'}, dummy_return), (...)])
+def test_save(mocked_couchdb, document, expected_response):
+    connector = Connector()
+    response = connector.save(document)
+    assert response == expected_return
+</code></pre>
+
+<p>Breaking it down a little bit: the tuple <code>('document', 'expected_response')</code>
+represents what you are providing as test cases, and in the cases array, in the
+first tuple: <code>({'_id': '1'}, dummy_return</code>), <code>{'_id': '1'}</code> is the document,
+while <code>dummy_return</code> is the expected return.</p>
+
+<p>You can add as many test cases as you want in the array of tests, e.g.:
+<code>({'_id': '2'}, dummy_return2)</code>, <code>({'_id': '3'}, False)</code>, etc.</p>
+
+<p>The test will run for every case you have defined in the parametrize. With
+that, you asserted that given an input, it returned the correct response. And
+this covers the basic stuff of testing with pytest and mock, how to use the
+return values and the side effects. It should be enough for most applications.</p>
+
+<p>Don&rsquo;t forget to check the documentations as well. There are plenty of other
+things there.</p>
+
+        </div>
+        
+
+        
+
+
+        
+        
+        <div style="height: 50px;"></div>
+        
+        
+
+        <div class="site-footer">
+  
+  <div class="site-footer-item">
+    <a href="https://git.sr.ht/~tretinha" target="_blank">sourcehut</a>
+  </div>
+  
+  <div class="site-footer-item">
+    <a href="https://github.com/tretinha" target="_blank">github</a>
+  </div>
+  
+  <div class="site-footer-item">
+    <a href="https://x0r.be/@treta" target="_blank">mastodon</a>
+  </div>
+  
+  <div class="site-footer-item">
+    <a href="mailto:gustavogiordanocolombini@gmail.com" target="_blank">email</a>
+  </div>
+  
+  
+</div>
+
+      </div>
+    </div>
+  </article>
+
+  <script src="/js/highlight.pack.js"></script>
+<script src="https://unpkg.com/quicklink@0.1.1/dist/quicklink.umd.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+  
+  var posts = document.getElementById('posts-list');
+  posts && quicklink({
+    el: posts,
+    priority: true,
+  });
+</script>
+
+  
+
+</body>
+
+</html>
