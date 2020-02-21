@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Hugo 0.59.1" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Tretinha&#39;s Lair" />
+  <meta property="og:url" content="http://localhost:1313/posts/k8s-first-impressions/" />
+  <link rel="canonical" href="http://localhost:1313/posts/k8s-first-impressions/" /><script type="application/ld+json">
+  {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+           "@type": "WebPage",
+           "@id": "http:\/\/localhost:1313"
+      },
+      "articleSection" : "posts",
+      "name" : "First impressions on Kubernetes",
+      "headline" : "First impressions on Kubernetes",
+      "description" : "I have deployed two simple apps on Google\x26rsquo;s managed version of Kubernetes, Google Kubernetes Engine. This isn\x26rsquo;t enough for me to judge the whole thing, obviously, but I would like to write down my impressions.\nFirst of all, there is a very \x26ldquo;simple\x26rdquo; process. You should create your deployment manifest - which is, mostly, a file describing what your app should look like in terms of ports it\x26rsquo;s listening to, volumes it needs, environment variables, secrets, etc.",
+      "inLanguage" : "en-US",
+      "author" : "Tretinha\x27s Lair",
+      "creator" : "Tretinha\x27s Lair",
+      "publisher": "Tretinha\x27s Lair",
+      "accountablePerson" : "Tretinha\x27s Lair",
+      "copyrightHolder" : "Tretinha\x27s Lair",
+      "copyrightYear" : "2020",
+      "datePublished": "2020-02-21 17:48:50 -0300 -03",
+      "dateModified" : "2020-02-21 17:48:50 -0300 -03",
+      "url" : "http:\/\/localhost:1313\/posts\/k8s-first-impressions\/",
+      "keywords" : [  ]
+  }
+</script>
+<title>First impressions on Kubernetes - Tretinha&#39;s Lair</title>
+  <meta property="og:title" content="First impressions on Kubernetes - Tretinha&#39;s Lair" />
+  <meta property="og:type" content="article" />
+  <meta name="description" content="I have deployed two simple apps on Google&rsquo;s managed version of Kubernetes, Google Kubernetes Engine. This isn&rsquo;t enough for me to judge the whole thing, obviously, but I would like to write down my impressions.
+First of all, there is a very &ldquo;simple&rdquo; process. You should create your deployment manifest - which is, mostly, a file describing what your app should look like in terms of ports it&rsquo;s listening to, volumes it needs, environment variables, secrets, etc." />
+
+  <link rel="stylesheet" href="https://unpkg.com/flexboxgrid@6.3.1/dist/flexboxgrid.min.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css" />
+  <link rel="stylesheet" href="/css/index.css">
+  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Tretinha&#39;s Lair">
+  
+  <link href="https://fonts.googleapis.com/css?family=Arvo|Permanent+Marker" rel="stylesheet">
+  
+  <script>
+    
+
+    (function (undefined) { }).call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
+  </script>
+
+  
+</head>
+
+<body>
+  <article class="post English" id="article">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2 col-lg-6 col-lg-offset-3">
+        <div class="site-header">
+          
+<header>
+  <div class="signatures site-title">
+    <a href="/">Tretinha&#39;s Lair</a>
+  </div>
+</header>
+<div class="row end-xs">
+  
+  
+</div>
+<div class="header-line"></div>
+
+        </div>
+        <header class="post-header">
+          <h1 class="post-title">First impressions on Kubernetes</h1>
+          
+          <div class="row post-desc">
+            <div class="col-xs-6">
+              
+              <time class="post-date" datetime="2020-02-21 17:48:50 -03">
+                21 Feb 2020
+              </time>
+              
+            </div>
+            <div class="col-xs-6">
+              
+              <div class="post-author">
+                <a target="_blank" href="">@Tretinha&#39;s Lair</a>
+              </div>
+              
+            </div>
+          </div>
+          
+        </header>
+
+        <div class="post-content markdown-body">
+          <p>I have deployed two simple apps on Google&rsquo;s managed version of Kubernetes,
+Google Kubernetes Engine. This isn&rsquo;t enough for me to judge the whole thing,
+obviously, but I would like to write down my impressions.</p>
+
+<p>First of all, there is a very &ldquo;simple&rdquo; process. You should create your
+deployment manifest - which is, mostly, a file describing what your app should
+look like in terms of ports it&rsquo;s listening to, volumes it needs, environment
+variables, secrets, etc. If your app is Dockerized, then this should be enough
+for you to have a working version of your app. Commands like <code>kubectl
+port-forward</code> can be your friend by forwarding the port in which your app is
+running in the pod - a pod is a collection of containers, most of the times
+it&rsquo;ll be a single container pod but, sometimes, you&rsquo;ll have sidecar containers
+(like a proxy to access your Google Cloud SQL database). You can then access
+<code>localhost:app-port</code> to easily test it. I quite liked the way we can describe
+our app, it seems like we are creating a docker-compose file, in a way.
+Kubernetes forces you to deploy your app in a containerized manner.</p>
+
+<p>After creating your deployment, if you want to access your app internally or
+externally, you&rsquo;ll have to create a &ldquo;service&rdquo; to define how the app will be
+accessible, if TLS will be enabled, which port forwards to which port, maybe
+your app will be accessed through a hostname (like app.tretinha.com, etc.).</p>
+
+<p>Something I struggled a little bit with was in getting to know the differences
+between the types of services, why most of the times an ingress resource is
+just better than creating a Load Balancer and exposing it&rsquo;s ports to the
+world. I thought that ingresses and services were two different things and, in
+fact, I was somewhat right. An ingress resource is a complementary part of a
+service, you can create a NodePort traffic that describes the app&rsquo;s ports and,
+then, use an ingress to forward traffic to this service. An interesting thing
+is that GKE comes packed with an ingress controller by default, the GCE
+controller, which means you don&rsquo;t always have to use a more robust controller
+like NGINX. It has a few downsides like not being able to redirect a request,
+and having its health checks on &ldquo;/&rdquo; (if you have, for example, a login screen
+that redirects every user that&rsquo;s not logged in, the health checks will make
+your containers/pods go to an unhealthy state, screwing your deploy - that&rsquo;s
+manageable by creating a readinessProbe at the &ldquo;/login&rdquo; path, though). You
+have to wait a little bit for your ingress to work, it&rsquo;s not always something
+fast.</p>
+
+<p>A very good thing is that you can limit the sizes of your container&rsquo;s machine,
+which doesn&rsquo;t cut you loose on the control part in comparison to a regular
+virtual machine. But the debugging part, in the first days, was infuriating.
+Not having an easy way to access your failed containers for debugging (I don&rsquo;t
+want logs only, for satan&rsquo;s sakes, I want to be able to run commands on the
+machine) is a very frustrating experience; your failed containers just don&rsquo;t
+exist anymore when a deploy fails, which means you can&rsquo;t access an unexistent
+machine. I didn&rsquo;t completely overcome this until now, I just got better at
+describing my services and deployments and didn&rsquo;t need that much to go into the
+machines. That&rsquo;s a bummer.</p>
+
+<p>Looking in the perspective of a company, it&rsquo;s very good to use Kubernetes
+because it&rsquo;s very easy to understand how to deploy the app. The knowledge gets
+more interchangeable. If you get this aligned with an infrastructure management
+tool like Terraform, you&rsquo;ll basically have your whole cloud infrastructure
+&ldquo;described&rdquo;.</p>
+
+<p>I&rsquo;ll probably create more articles on Kubernetes since the journey is only
+starting (maybe rectify a few things too? heh).</p>
+
+        </div>
+        
+
+        
+
+
+        
+        
+        <div style="height: 50px;"></div>
+        
+        
+
+        <div class="site-footer">
+  
+  <div class="site-footer-item">
+    <a href="https://git.sr.ht/~tretinha" target="_blank">sourcehut</a>
+  </div>
+  
+  <div class="site-footer-item">
+    <a href="https://github.com/tretinha" target="_blank">github</a>
+  </div>
+  
+  <div class="site-footer-item">
+    <a href="https://x0r.be/@treta" target="_blank">mastodon</a>
+  </div>
+  
+  <div class="site-footer-item">
+    <a href="mailto:gustavo@tretinha.com" target="_blank">email</a>
+  </div>
+  
+  
+</div>
+
+      </div>
+    </div>
+  </article>
+
+  <script src="/js/highlight.pack.js"></script>
+<script src="https://unpkg.com/quicklink@0.1.1/dist/quicklink.umd.js"></script>
+
+<script>
+  hljs.initHighlightingOnLoad();
+  
+  var posts = document.getElementById('posts-list');
+  posts && quicklink({
+    el: posts,
+    priority: true,
+  });
+</script>
+
+  
+
+</body>
+
+</html>

@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Tretinha&#39;s Lair</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Oct 2019 10:52:20 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 21 Feb 2020 17:48:50 -0300</lastBuildDate>
     
 	<atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>First impressions on Kubernetes</title>
+      <link>http://localhost:1313/posts/k8s-first-impressions/</link>
+      <pubDate>Fri, 21 Feb 2020 17:48:50 -0300</pubDate>
+      
+      <guid>http://localhost:1313/posts/k8s-first-impressions/</guid>
+      <description>I have deployed two simple apps on Google&amp;rsquo;s managed version of Kubernetes, Google Kubernetes Engine. This isn&amp;rsquo;t enough for me to judge the whole thing, obviously, but I would like to write down my impressions.
+First of all, there is a very &amp;ldquo;simple&amp;rdquo; process. You should create your deployment manifest - which is, mostly, a file describing what your app should look like in terms of ports it&amp;rsquo;s listening to, volumes it needs, environment variables, secrets, etc.</description>
+    </item>
     
     <item>
       <title>Unit testing with python</title>
